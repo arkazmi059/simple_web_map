@@ -1,2 +1,2 @@
-# simple_web_map
+# LB Housing Map
 simple web map hosted on github, omar training
