@@ -8,19 +8,18 @@
 <link href="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.css" rel="stylesheet" />
 <style>
 	body { margin: 0; padding: 0; }
-	#map1 { position: absolute; top: 0; bottom: 0; width: 100%; }
+	#map { position: absolute; top: 0; bottom: 0; width: 100%; }
 </style>
 </head>
 <body>
-<div id="map1"></div>
+<div id="map"></div>
 <script>
 	mapboxgl.accessToken = 'pk.eyJ1IjoiYXJrYXptaSIsImEiOiJjazlubDQ5M3QwMHlsM2dua283cHhlZ2h6In0.kIgXCEbrKQSsFIDLX_to_g';
-  var coordinates = [-118.19, 33.77]
     var map = new mapboxgl.Map({
-        container: 'map1', // container id
-        style: 'mapbox://styles/arkazmi/ck9nlo2rf3bxf1innw4bgmkwt', // stylesheet location
-        center: [-118.19, 33.77], // starting position [lng, lat] > Long Beach
-        zoom: 14 // starting zoom
+        container: 'map', // container id
+        style: 'mapbox://styles/arkazmi/ck9w1x8xc01001imgcjyy25sc', // stylesheet location
+        center: [-118, 33.77], // starting position [lng, lat]
+        zoom: 9 // starting zoom
     });
 </script>
 
