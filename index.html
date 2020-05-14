@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset='utf-8' />
-    <title>LB Code Violations Sample</title>
+    <title>LB Code Violation Sample</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.css' rel='stylesheet' />
@@ -27,8 +27,8 @@
     var map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/lbhousing/ck9lcu6bl2mj41imwhxtv0err', // style URL
-      center: [-118.142, 33.803],
-      zoom: 11.9
+      center: [-118.14, 33.80],
+      zoom: 10.9
     });
     map.on('click', function(e) {
   var features = map.queryRenderedFeatures(e.point, {
