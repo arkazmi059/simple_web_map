@@ -1,51 +1,130 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset='utf-8' />
-    <title>LB Code Violation Sample</title>
-    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.css' rel='stylesheet' />
+<html style="height:100%">
+    <head>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+        <!--Mapbox CSS and JS Libraries-->
+        <script src="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.js"></script>
+        <link href="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.css" rel="stylesheet" />
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+
     <style>
-      body {
-        margin: 0;
-        padding: 0;
-      }
 
-      #map {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 100%;
-      }
+        body {
+            margin:0;
+        }
+
+        .flex {
+            display: flex;
+            flex-wrap: wrap;
+            height: 100vh;
+            margin-bottom: unset;
+        }
+        .row .col{ 
+            padding:0 !important;
+        }
+
+        #map { position:relative; width:100%; height:100%}
+
+        .panel {
+            padding:unset !important;
+            overflow-y: auto;
+            margin-left:unset !important;
+            margin-right:unset !important;
+        }
     </style>
-  </head>
-  <body>
-    <div id='map'></div>
+
+    <body>
+        <div class="row flex">
+            <!--            Left Panel-->
+            <div class="col s12 m6 panel">
+                <div id='map'></div>
+            </div>
+            <!--            Right Panel-->
+            <div class="col s12 m6 grey lighten-4 panel" style='overflow:scroll'>
+                <div class="row panel">
+                    <!--                    Tabs menu-->
+                    <div class="col s12">
+                        <ul class="tabs">
+                            <li class="tab col s3"><a href="#test1">About</a></li>
+                            <li class="tab col s3"><a href="#test2">Parcel</a></li>
+                            <li class="tab col s3"><a href="#test3">Map Layers</a></li>
+                            <li class="tab col s3"><a href="#test4">Definitions</a></li>
+                        </ul>
+                    </div>
+                    <!--                    Tab Pages-->
+                    <div id="test1" class="col s12">
+                        <div class="container">
+                            <h1>Title Area</h1>
+                            <p>"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
+                            </p>
+                        </div>
+                    </div>
+                    <div id="test2" class="col s12">Test 2</div>
+                    <div id="test3" class="col s12">
+                        <ul class="collection">
+                            <li class="collection-item">
+                                <p>
+                                    <label>
+                                        <input type="checkbox" name='parcels'/> <!--This is where you add the real name of the layer-->
+                                        <span>Parcels</span>
+                                    </label>
+                                </p>
+                            </li>
+                            <li class="collection-item">
+                                <p>
+                                    <label>
+                                        <input type="checkbox" name='LB Boundary Fill'/>
+                                        <span>LB Boundary Fill</span>
+                                    </label>
+                                </p>
+                            </li>
+                            <li class="collection-item">Layer 3</li>
+                            <li class="collection-item">Layer 4</li>
+                        </ul>
+                    </div>
+                    <div id="test4" class="col s12">Test 4</div>
+                </div>
+            </div>
+
+        </div>
+    </body>
+
     <script>
-    mapboxgl.accessToken = 'pk.eyJ1IjoibGJob3VzaW5nIiwiYSI6ImNrN3R1YnlybDB2M2szc280d3pmNTViZHYifQ.2lFHVEQl5YbTp4qgM2OmGQ'; //  access token
-    var map = new mapboxgl.Map({
-      container: 'map',
-      style: 'mapbox://styles/lbhousing/ck9lcu6bl2mj41imwhxtv0err', // style URL
-      center: [-118.14, 33.80],
-      zoom: 10.9
-    });
-    map.on('click', function(e) {
-  var features = map.queryRenderedFeatures(e.point, {
-    layers: ['Violations'] // name of the layer
-  });
+        mapboxgl.accessToken = 'pk.eyJ1IjoibGJob3VzaW5nIiwiYSI6ImNrN3R1YnlybDB2M2szc280d3pmNTViZHYifQ.2lFHVEQl5YbTp4qgM2OmGQ';
+        var map = new mapboxgl.Map({
+            container: 'map', // container id
+            style: 'mapbox://styles/lbhousing/ckcfjvqit07cz1inzic14ug9r', // stylesheet location
+            center: [-118.167, 33.809], // starting position [lng, lat]
+            zoom: 11 // starting zoom
+        });
 
-  if (!features.length) {
-    return;
-  }
+        //Function to create tabs from materialize
+        var el = $('.tabs').first()[0];
+        var instance = M.Tabs.init(el);
+        $(document).ready(function(){
+            $('.tabs').tabs();
+        });
+        instance.updateTabIndicator();
 
-  var feature = features[0];
+        //Function to take name of checkbox change mapbox layer
+        $("input[type=checkbox]").change(function(){
+            var datalayer = $(this).attr("name");
+            var visibility = map.getLayoutProperty(datalayer, 'visibility');
+            console.log(map.getLayoutProperty(datalayer, 'visibility'))
+            if (visibility === 'visible') {
+                map.setLayoutProperty(datalayer, 'visibility', 'none');
+            } else {
+                map.setLayoutProperty(datalayer, 'visibility', 'visible');
+            }
+        })
 
-  var popup = new mapboxgl.Popup({ offset: [0, -15] })
-    .setLngLat(feature.geometry.coordinates)
-    .setHTML('<h3>' + feature.properties.title + '</h3><p>' + feature.properties.description + '</p>')
-    .addTo(map);
-});
     </script>
-  </body>
 </html>
