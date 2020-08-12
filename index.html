@@ -1,25 +1,38 @@
 <!DOCTYPE html>
 <html style="height:100%">
+
     <head>
         <!--Import Google Icon Font-->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <!-- Compiled and minified JavaScript -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
         <!-- Compiled and minified CSS -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+        <!--Mapbox Geocoder CSS and JS Libraries-->
+        <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
+        <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css" type="text/css" />
         <!--Mapbox CSS and JS Libraries-->
-        <script src="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.js"></script>
         <link href="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.css" rel="stylesheet" />
+        <script src="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.js"></script>
         <!--Let browser know website is optimized for mobile-->
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://d3js.org/d3.v3.js"></script>
     </head>
 
     <style>
 
-        body {
-            margin:0;
+
+        html body {
+            margin: 0;
+            overflow: hidden;
         }
+
+        .tabs a {
+            color:black !important;
+        }
+        
+        
 
         .flex {
             display: flex;
@@ -27,17 +40,58 @@
             height: 100vh;
             margin-bottom: unset;
         }
-        .row .col{ 
-            padding:0 !important;
+
+        .row .col {
+            padding: 0 !important;
+            margin-bottom:0 !important;
         }
 
-        #map { position:relative; width:100%; height:100%}
+        #map {
+            position: relative;
+            width: 100%;
+            height: 100%
+        }
 
         .panel {
-            padding:unset !important;
+            padding: unset !important;
             overflow-y: auto;
-            margin-left:unset !important;
-            margin-right:unset !important;
+            margin-left: unset !important;
+            margin-right: unset !important;
+            height:100%
+        }
+
+        .collapsible {
+            padding:10px
+        }
+
+        .innerpanel {
+
+        }
+
+        .mapboxgl-popup {
+            max-width: 400px;
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            background-color: #606b60;
+            border-color: black;
+        }
+
+        input {
+            font: inherit !important;
+            width: 100% !important;
+            border: 0 !important;
+            background-color: transparent !important;
+            margin: 0 !important;
+            height: 30px !important;
+            color: #404040 !important;
+            color: rgba(0, 0, 0, 0.75) !important;
+            padding: 6px 45px!important;
+            text-overflow: ellipsis !important;
+            white-space: nowrap;
+            overflow: hidden!important;
+        }
+
+        .infoarea {
+            margin: 25px;
         }
     </style>
 
@@ -48,61 +102,272 @@
                 <div id='map'></div>
             </div>
             <!--            Right Panel-->
-            <div class="col s12 m6 grey lighten-4 panel" style='overflow:scroll'>
+            <div class="col s12 m6 grey lighten-4 panel" style='overflow:hidden'>
                 <div class="row panel">
                     <!--                    Tabs menu-->
                     <div class="col s12">
                         <ul class="tabs">
                             <li class="tab col s3"><a href="#test1">About</a></li>
-                            <li class="tab col s3"><a href="#test2">Parcel</a></li>
+                            <li class="tab col s3"><a href="#test2">Code Enforced Properties</a></li>
                             <li class="tab col s3"><a href="#test3">Map Layers</a></li>
-                            <li class="tab col s3"><a href="#test4">Definitions</a></li>
+                            <li class="tab col s3"><a href="#definitions">Definitions</a></li>
                         </ul>
                     </div>
                     <!--                    Tab Pages-->
                     <div id="test1" class="col s12">
-                        <div class="container">
-                            <h1>Welcome.</h1>
-                            <p>A tool for Long Beach tenants, organizers, and the researcher.</p>
-                          <p>An effort by CSULB MsGISCi students Salena Tach and Ali Kazmi. Sponsored by Dr. Gary Hytrek of CSULB and Research Director at Small World Strategy, Mr. Steve Askin. With noble support from Forthe's Kevin Flores and Omar Ureta of theworksla. Special thanks to LIBRE and Beto Lopez.
-                          </p>
-                          <p>Data current as of 2019. Provided by the City of Long Beach via FOIA.</p>
+                        <div class="infoarea">
+                            <h5>A Map for Long Beach Code Enforcement Cases</h5>
+                            <p> This is a tool for Long Beach tenants, organizers, and researchers.</p>
+                            <p>An effort to create convenient spatial code enforcement data accessibility for all. 
+                                Created by CSULB MsGISCi students Ali Kazmi and Salena Tach through the guidance of Omar Ureta. 
+                                Sponsored by Dr. Gary Hytrek of CSULB and Research Director at Small World Strategy, Mr. Steve Askin 
+                                with support from Forthe's Kevin Flores. Special thanks to LIBRE and Beto Lopez.
+                            </p>
+                            <p>Data current as of 2019. Provided by the City of Long Beach via FOIA.
+                            </p>
                         </div>
                     </div>
-                    <div id="test2" class="col s12">Test 2</div>
+                    <div id="test2" class="col s12">
+                        <div class="infoarea">
+                            <h4>Code Enforced Properties</h4>
+                            <p>For information on the number of cases and description issued, click the points on the map.</p>
+                            <hr>
+                            <div id="loading_area"></div>
+                        </div>
+                    </div>
                     <div id="test3" class="col s12">
-                        <ul class="collection">
-                            <li class="collection-item">
-                                <p>
+                        <ul class="collapsible">
+                            <li>
+                                <div class="collapsible-header"><i class="material-icons">more_horiz</i>Long Beach Boundary</div>
+                                <div class="collapsible-body">
                                     <label>
-                                        <input type="checkbox" name='CodeViolation_Curb'/> <!--This is where you add the real name of the layer-->
-                                        <span>Code Violations</span>
-                                    </label>
-                                </p>
+                                        <input type="checkbox" checked="checked" name='LB Boundary Line'/>
+                                        <span><b>Long Beach Boundary</b></span>   
+                                    </label> 
+                                    <p>This layer contains the boundary for the city of Long Beach.  Layer souce: City of Long Beach</p>
+                                    <table class="striped">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <a class="waves-effect waves-light btn-small" style="background-color:#000000;"></a>
+                                                </td>
+                                                <td>Long Beach</td>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </li>
-                            <li class="collection-item">
-                                <p>
+                            <li>
+                                <div class="collapsible-header"><i class="material-icons">more_horiz</i>Cases</div>
+                                <div class="collapsible-body">
                                     <label>
-                                        <input type="checkbox" name='LB Boundary Fill'/>
-                                        <span>LB Boundary Fill</span>
+                                        <input type="checkbox" checked="checked" name='CodeViolation_Curb'/> <!--This is where you add the real name of the layer-->
+                                        <span><b>Cases</b></span>
                                     </label>
-                                </p>
+                                    <p>This layer contains code enforced cases. There are over 14,130 cases included.  The original source is from the City of Long Beach. The points represent cases that are either external or all inclusive.  If points are external, or curb only, they represent minor cases such as trash cans  left out or overgrown vegetation.  Indoor inclusive cases are more likely to affect the livelihood of residents.  </p>
+                                    
+                                    <table class="striped">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <a class="waves-effect waves-light btn-small" style="background-color:#01655d;"></a>
+                                                </td>
+                                                <td>Curbside Only Cases</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <a class="waves-effect waves-light btn-small" style="background-color:#8c510a;"></a>
+                                                </td>
+                                                <td>Mixed Cases</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </li>
-                            <li class="collection-item"><p>
+                            <li>
+                                <div class="collapsible-header"><i class="material-icons">more_horiz</i>Council Dristricts Numbers</div>
+                                <div class="collapsible-body">
                                     <label>
-                                        <input type="checkbox" name='parcels'/>
-                                        <span>Parcels</span>
+                                        <input type="checkbox" checked="checked" name='City Council Boundaries Fill'/>
+                                        <span><b>Council Districts</b></span>
+                                       
                                     </label>
-                                </p></li>
-                            <li class="collection-item"><p>
+                                    <p>This layer represents the areas for the nine council districts.  Layer source: City of Long Beach</p>
+                                    <table class="striped">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <a class="waves-effect waves-light btn-small" style="background-color:#d19999;"></a>
+                                                </td>
+                                                <td>District 1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <a class="waves-effect waves-light btn-small" style="background-color:#e3d94a;"></a>
+                                                </td>
+                                                <td>District 2</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <a class="waves-effect waves-light btn-small" style="background-color:#1782d3;"></a>
+                                                </td>
+                                                <td>District 3</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <a class="waves-effect waves-light btn-small" style="background-color:#6dbb35;"></a>
+                                                </td>
+                                                <td>District 4</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <a class="waves-effect waves-light btn-small" style="background-color:#f25e02;"></a>
+                                                </td>
+                                                <td>District 5</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <a class="waves-effect waves-light btn-small" style="background-color:#1ee6c5;"></a>
+                                                </td>
+                                                <td>District 6</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <a class="waves-effect waves-light btn-small" style="background-color:#ed73ca;"></a>
+                                                </td>
+                                                <td>District 7</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <a class="waves-effect waves-light btn-small" style="background-color:#ec9832;"></a>
+                                                </td>
+                                                <td>District 8</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <a class="waves-effect waves-light btn-small" style="background-color:#979191;"></a>
+                                                </td>
+                                                <td>District 9</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="collapsible-header"><i class="material-icons">more_horiz</i>CalEnviroScreen - Long Beach Area</div>
+                                <div class="collapsible-body">
                                     <label>
-                                        <input type="checkbox" name='City Council Boundaries Fill'/>
-                                        <span>City Council Districts</span>
+                                        <input type="checkbox" checked="checked" name='calenviron'/>
+                                        <span><b>CalEnviroScreen - Long Beach Area</b></span>
                                     </label>
-                                </p></li>
+                                    <p>This layer contains CalEnviroScreen data cut to the boundary of Long Beach from the California Office of Environmental Health Assessment.</p>                                   
+                                    <table class="striped">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <a class="waves-effect waves-light btn-small" style="background-color:#006100;"></a>
+                                                </td>
+                                                <td>01% - 10%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <a class="waves-effect waves-light btn-small" style="background-color:#3c8000;"></a>
+                                                </td>
+                                                <td>11% - 20%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <a class="waves-effect waves-light btn-small" style="background-color:#6ba100;"></a>
+                                                </td>
+                                                <td>21% - 30%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <a class="waves-effect waves-light btn-small" style="background-color:#a4c400;"></a>
+                                                </td>
+                                                <td>31% - 40%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <a class="waves-effect waves-light btn-small" style="background-color:#dfeb00;"></a>
+                                                </td>
+                                                <td>41% - 50%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <a class="waves-effect waves-light btn-small" style="background-color:#ffea00;"></a>
+                                                </td>
+                                                <td>51% - 60%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <a class="waves-effect waves-light btn-small" style="background-color:#ffbb00;"></a>
+                                                </td>
+                                                <td>61% - 70%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <a class="waves-effect waves-light btn-small" style="background-color:#ff9100;"></a>
+                                                </td>
+                                                <td>71% - 80%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <a class="waves-effect waves-light btn-small" style="background-color:#ff6200;"></a>
+                                                </td>
+                                                <td>81% - 90%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <a class="waves-effect waves-light btn-small" style="background-color:#ff2200;"></a>
+                                                </td>
+                                                <td>91% - 100%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <a class="waves-effect waves-light btn-small" style="background-color:#c2c2c2;"></a>
+                                                </td>
+                                                <td>High Pollution, Low Pollution</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </li>
                         </ul>
                     </div>
-                    <div id="test4" class="col s12">Test 4</div>
+                    <div id="definitions" class="col s12" >
+                        <div style="padding:20px">
+                            <p>This is a dictionary of the code violations with a description</p>
+                            <div id="csvtable"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -114,29 +379,128 @@
         var map = new mapboxgl.Map({
             container: 'map', // container id
             style: 'mapbox://styles/lbhousing/ckcfjvqit07cz1inzic14ug9r', // stylesheet location
-            center: [-118.167, 33.809], // starting position [lng, lat]
+            center: [-118.16663, 33.80852], // starting position [lng, lat]
             zoom: 11 // starting zoom
         });
 
         //Function to create tabs from materialize
         var el = $('.tabs').first()[0];
         var instance = M.Tabs.init(el);
-        $(document).ready(function(){
-            $('.tabs').tabs();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.collapsible');
+            var instances = M.Collapsible.init(elems);
         });
-        instance.updateTabIndicator();
 
         //Function to take name of checkbox change mapbox layer
-        $("input[type=checkbox]").change(function(){
+        $("input[type=checkbox]").change(function() {
             var datalayer = $(this).attr("name");
             var visibility = map.getLayoutProperty(datalayer, 'visibility');
-            console.log(map.getLayoutProperty(datalayer, 'visibility'))
-            if (visibility === 'visible') {
+            if ((visibility != 'none' && visibility != 'visible')) {
                 map.setLayoutProperty(datalayer, 'visibility', 'none');
-            } else {
-                map.setLayoutProperty(datalayer, 'visibility', 'visible');
+                console.log(map.getLayoutProperty(datalayer, 'visibility'))
             }
+            
+            if(visibility === 'none'){
+                map.setLayoutProperty(datalayer, 'visibility', 'visible');
+                console.log(map.getLayoutProperty(datalayer, 'visibility'))
+            } else {map.setLayoutProperty(datalayer, 'visibility', 'none')}
         })
 
+        // Click event for adding info from map to panel
+        map.on('click', 'CodeViolation_Curb', function(e) {
+            var primary_address = e.features[0].properties.Address_Normalized
+            var code_enforcement_objects = e.features
+            var code_enforcement_count = e.features.length
+            var yearbuilt = e.features[0].properties.Year_Built;
+            var property_type = e.features[0].properties.Property_Use_Type;
+            $("#loading_area").empty().html(
+                "<h5>Address: "+
+                primary_address+
+                "</h5><h5>Year Built: "+
+                yearbuilt+
+                "</h5><h5>Property Type: "+
+                property_type+
+                "</h5><h5>There are "+
+                code_enforcement_count+
+                " code enforcement cases issued for this address</h5><hr>"
+            )
+            console.log(code_enforcement_count)
+            $.each(code_enforcement_objects, function(index, layer){
+                console.log(layer)
+                var apn = layer.properties.APN;
+                var address = layer.properties.Address_Normalized;
+                var totalViolations = layer.properties.Total_Violations;
+                var caseDescription = layer.properties.Case_Description_Full;
+                var case_number = layer.properties.Case_Number;
+                var case_type = layer.properties.Case_Type;
+                var case_opened = layer.properties.Case_Opened;
+                var case_closed = layer.properties.Case_Closed;
+                var violation_codes = layer.properties.Violation_Codes_All;
+
+                console.log(layer)
+                $("#loading_area").append(
+                    "<h6>Case Number: "+
+                    case_number+
+                    "</h6><h6>Case Opened: "+
+                    case_opened+
+                    "</h6><h6>Case Closed: "+
+                    case_closed+
+                    "</h6><h6>Case Description: "+
+                    caseDescription+
+                    "</h6><h6>Total Violations: "+
+                    totalViolations+
+                    "</h6><h6>Violation Codes: "+
+                    violation_codes+
+                    "<hr>"
+                )
+
+            })
+        });
+
+        // Change the cursor to a pointer when the mouse is over the places layer.
+        map.on('mouseenter', 'CodeViolation_Curb', function(e) {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+
+        // Change it back to a pointer when it leaves.
+        map.on('mouseleave', 'CodeViolation_Curb', function(e) {
+            map.getCanvas().style.cursor = '';
+        });
+
+        map.doubleClickZoom.enable();
+
+        map.addControl(
+            new MapboxGeocoder({
+                accessToken: mapboxgl.accessToken,
+                mapboxgl: mapboxgl
+            })
+        );
+
+        map.addControl(new mapboxgl.NavigationControl());
+
+        d3.text("https://lbhousingdata.github.io/code_enforcement/data/HH_Book_AG.csv", function(data) {
+            var parsedCSV = d3.csv.parseRows(data);
+
+            var container = d3.select("#csvtable")
+            .append("table")
+
+            .selectAll("tr")
+            .data(parsedCSV).enter()
+            .append("tr")
+
+            .selectAll("td")
+            .data(function(d) { return d; }).enter()
+            .append("td")
+            .text(function(d) { return d; });
+        });
+        var scale = new mapboxgl.ScaleControl({
+            maxWidth: 150,
+            unit: 'imperial'
+        });
+        map.addControl(scale);
+
+        scale.setUnit('imperial');
     </script>
+
 </html>
